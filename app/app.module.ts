@@ -23,7 +23,10 @@ import { Ng2DatetimePickerModule } from 'ng2-datetime-picker';
     Ng2GoogleChartModule,
     Ng2DatetimePickerModule,
     RouterModule.forRoot(
-      []
+            [
+              { path: 'simulator', component: SimulatorComponent },
+              { path: '', redirectTo: 'simulator', pathMatch: 'full' }
+      ]
     )
   ],
   declarations:
