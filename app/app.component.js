@@ -23,7 +23,7 @@ var AppComponent = (function () {
         core_1.Component({
             selector: 'pm-app',
             moduleId: module.id,
-            templateUrl: './simulator/simulator.component.html'
+            templateUrl: './app.component.html'
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

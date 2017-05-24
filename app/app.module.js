@@ -15,7 +15,6 @@ var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var app_component_1 = require('./app.component');
 var simulator_component_1 = require('./simulator/simulator.component');
-var simulator_module_1 = require('./simulator/simulator.module');
 var common_1 = require('@angular/common');
 var http_2 = require('@angular/http');
 var ng2_googlechart_1 = require('ng2-googlechart');
@@ -30,17 +29,19 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
-                simulator_module_1.SimulatorModule,
                 http_2.JsonpModule,
                 angular2_material_datepicker_1.DatepickerModule,
                 ng2_googlechart_1.Ng2GoogleChartModule,
                 ng2_datetime_picker_1.Ng2DatetimePickerModule,
                 router_1.RouterModule.forRoot([
                     { path: 'simulator', component: simulator_component_1.SimulatorComponent },
-                    { path: '', redirectTo: 'simulator', pathMatch: 'full' }
+                    { path: '', redirectTo: 'simulator', pathMatch: 'full' },
                 ])
             ],
-            declarations: [],
+            declarations: [
+                app_component_1.AppComponent,
+                simulator_component_1.SimulatorComponent
+            ],
             providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
             bootstrap: [app_component_1.AppComponent],
         }), 

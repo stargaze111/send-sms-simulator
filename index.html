@@ -18,18 +18,12 @@
 
     <!-- Polyfill(s) for older browsers -->
     <script src="node_modules/core-js/client/shim.min.js"></script>
-    
+
     <script src="node_modules/zone.js/dist/zone.js"></script>
     <script src="node_modules/reflect-metadata/Reflect.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
   <script src="node_modules/underscore/underscore.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	  <script src="https://www.google.com/jsapi"></script>
-	  <script >
-	  google.load('visualization', '1.0', {
-		  'packages': ['corechart']
-		});
-	</script>
+
     <!-- Configure SystemJS -->
     <script src="systemjs.config.js"></script>
     <script>
@@ -39,20 +33,20 @@
         #loadingBusy{
             margin:30px auto;
             width: 125px;
-        } 
+        }
 
     </style>
 
-    
+
 </head>
 
 <body>
-    <pm-app>    
+    <pm-app>
         <div id="loadingBusy" *ngIf='busyLoading' class="row">
             <div class="col-md-12">
                 <img  src="app/assets/images/loader.gif">
             </div>
-        </div> 
+        </div>
     </pm-app>
 </body>
 

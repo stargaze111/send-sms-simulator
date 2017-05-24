@@ -24,7 +24,7 @@ export class SimulatorComponent {
     worker: Worker;
     model: SendSMSModel = new SendSMSModel('0426706255', 'Buy anything from our Uniqlo store in Westfield, Parramatta this weekend & receive 10 % discount.')
     
-    private clientId: string = 'UMPB1q9XBKudOD58cyVYACOp22a5OjgY';
+    private clientId: string = '7Ok9bKbKed4AnChaSVe1QU3YRgFOj1mf';
     private baseApiUrl = 'https://apac-demo3-test.apigee.net/v1/messagingservices/';
     private sendSMSPath = 'send/sms';    
 
@@ -33,12 +33,18 @@ export class SimulatorComponent {
     private subscription : Subscription;
 
     private countSuccess: number = 0;
+    
+    private maxMessages: number = 5;
+    
+     private counter: number = 0;
 
     private countFailures: number = 0;
 
     private responseMessage : string = "";
     
     private stage: number = 1; 
+    
+    private isContinue : boolean = true;
 
   
     constructor(private _http:Http) {       
@@ -48,11 +54,16 @@ export class SimulatorComponent {
         this.postRequest(this.model, this.clientId, this.baseApiUrl + this.sendSMSPath)
             .subscribe(
             data => {
-                console.log(data);
-                this.countSuccess++;
-                this.responseMessage = data;
+                //console.log(data);
+		                if(data!=null&&data.error!=null){
+		                  this.countFailures++;
+		                  this.responseMessage = data.error.message;
+		                }else{
+		                  this.countSuccess++;
+		                  this.responseMessage = "success";
+                }
             },error => {
-                console.log(error);
+                //console.log(error);
                 this.countFailures++;
                 this.responseMessage = error;
             }
@@ -61,18 +72,30 @@ export class SimulatorComponent {
 
 
     runSimulation() {
+        this.reset();
         let relativePath = 'send/sms';
         this.subscription = Observable
             .interval(1000)
-            .flatMap(() => {                
-                return this.postRequest(this.model, this.clientId, this.baseApiUrl + relativePath);
+            .flatMap(() => {    
+                  this.isContinue = (this.counter<this.maxMessages);
+                  this.counter++;
+                  return this.postRequest(this.model, this.clientId, this.baseApiUrl + relativePath);
+               
             }).subscribe(
             data => {
-                console.log(data);
-                this.countSuccess++;
-                this.responseMessage = data;
+                //console.log(data);
+                if(data!=null&&data.error!=null){
+                  this.countFailures++;
+                  this.responseMessage = data.error.message;
+                  console.log("responseMessage : "+this.responseMessage);
+                }else{
+                  this.countSuccess++;
+                  this.responseMessage = "success";
+                }
+                
+                
             },error => {
-                console.log(error);
+                //console.log(error);
                 this.countFailures++;
                 this.responseMessage = error;
             }
@@ -81,7 +104,12 @@ export class SimulatorComponent {
     }
 
     postRequest(postModel:any, clientId:string, url: string ){
+           if(!this.isContinue){
+             this.countFailures--;
+           //this.subscription.unsubscribe(); 
+           return Observable.throw("Reached the maximum number of messages requested.");
            
+           }
             let headers = new Headers(
                     { 'Content-Type': 'application/json',
                     'client_id': clientId }
@@ -95,7 +123,7 @@ export class SimulatorComponent {
                     return data.json();
                 }
                 )
-            .catch(this.handleError)
+            .catch(this.handleError);
         
   }
     
@@ -108,6 +136,7 @@ export class SimulatorComponent {
         this.countSuccess = 0;
         this.countFailures = 0;
         this.responseMessage = "";
+        this.counter =0;
     }
 
     stopSummary() {

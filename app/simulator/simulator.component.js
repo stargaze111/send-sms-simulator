@@ -21,46 +21,70 @@ var SimulatorComponent = (function () {
         this._http = _http;
         this.stopSim = { Value: false };
         this.model = new sendsms_model_1.SendSMSModel('0426706255', 'Buy anything from our Uniqlo store in Westfield, Parramatta this weekend & receive 10 % discount.');
-        this.clientId = 'UMPB1q9XBKudOD58cyVYACOp22a5OjgY';
+        this.clientId = '7Ok9bKbKed4AnChaSVe1QU3YRgFOj1mf';
         this.baseApiUrl = 'https://apac-demo3-test.apigee.net/v1/messagingservices/';
         this.sendSMSPath = 'send/sms';
         this.transactions = {};
         this.countSuccess = 0;
+        this.maxMessages = 5;
+        this.counter = 0;
         this.countFailures = 0;
         this.responseMessage = "";
         this.stage = 1;
+        this.isContinue = true;
     }
     SimulatorComponent.prototype.sendSMS = function (form) {
         var _this = this;
         this.postRequest(this.model, this.clientId, this.baseApiUrl + this.sendSMSPath)
             .subscribe(function (data) {
-            console.log(data);
-            _this.countSuccess++;
-            _this.responseMessage = data;
+            //console.log(data);
+            if (data != null && data.error != null) {
+                _this.countFailures++;
+                _this.responseMessage = data.error.message;
+            }
+            else {
+                _this.countSuccess++;
+                _this.responseMessage = "success";
+            }
         }, function (error) {
-            console.log(error);
+            //console.log(error);
             _this.countFailures++;
             _this.responseMessage = error;
         });
     };
     SimulatorComponent.prototype.runSimulation = function () {
         var _this = this;
+        this.reset();
         var relativePath = 'send/sms';
         this.subscription = Rx_1.Observable
             .interval(1000)
             .flatMap(function () {
+            _this.isContinue = (_this.counter < _this.maxMessages);
+            _this.counter++;
             return _this.postRequest(_this.model, _this.clientId, _this.baseApiUrl + relativePath);
         }).subscribe(function (data) {
-            console.log(data);
-            _this.countSuccess++;
-            _this.responseMessage = data;
+            //console.log(data);
+            if (data != null && data.error != null) {
+                _this.countFailures++;
+                _this.responseMessage = data.error.message;
+                console.log("responseMessage : " + _this.responseMessage);
+            }
+            else {
+                _this.countSuccess++;
+                _this.responseMessage = "success";
+            }
         }, function (error) {
-            console.log(error);
+            //console.log(error);
             _this.countFailures++;
             _this.responseMessage = error;
         });
     };
     SimulatorComponent.prototype.postRequest = function (postModel, clientId, url) {
+        if (!this.isContinue) {
+            this.countFailures--;
+            //this.subscription.unsubscribe(); 
+            return Rx_1.Observable.throw("Reached the maximum number of messages requested.");
+        }
         var headers = new http_1.Headers({ 'Content-Type': 'application/json',
             'client_id': clientId });
         var options = new http_1.RequestOptions({ headers: headers });
@@ -79,6 +103,7 @@ var SimulatorComponent = (function () {
         this.countSuccess = 0;
         this.countFailures = 0;
         this.responseMessage = "";
+        this.counter = 0;
     };
     SimulatorComponent.prototype.stopSummary = function () {
         if (this.subscription != null) {
