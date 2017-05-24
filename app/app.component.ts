@@ -13,7 +13,7 @@ export class AppComponent {
    
     
     public isCollapsed: boolean = true;
-    
+    public simulatorSelected: boolean = true;
 
     markSimulatorSelected(){
    

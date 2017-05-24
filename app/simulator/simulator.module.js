@@ -9,26 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
-        this.pageTitle = 'Send SMS Simulator';
-        this.isCollapsed = true;
-        this.simulatorSelected = true;
-        console.log("constructor!");
+var router_1 = require('@angular/router');
+var simulator_component_1 = require('./simulator.component');
+var shared_module_1 = require('../shared/shared.module');
+var SimulatorModule = (function () {
+    function SimulatorModule() {
     }
-    AppComponent.prototype.markSimulatorSelected = function () {
-        this.simulatorSelected = true;
-    };
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'pm-app',
-            moduleId: module.id,
-            templateUrl: './app.component.html',
-            providers: []
+    SimulatorModule = __decorate([
+        core_1.NgModule({
+            declarations: [
+                simulator_component_1.SimulatorComponent,
+            ],
+            imports: [
+                router_1.RouterModule.forChild([
+                    { path: 'simulator', component: simulator_component_1.SimulatorComponent }
+                ]),
+                shared_module_1.SharedModule
+            ],
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], SimulatorModule);
+    return SimulatorModule;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.SimulatorModule = SimulatorModule;
+//# sourceMappingURL=simulator.module.js.map
