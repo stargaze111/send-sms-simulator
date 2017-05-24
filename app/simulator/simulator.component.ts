@@ -22,7 +22,7 @@ export class SimulatorComponent {
 
     stopSim: any = { Value: false };
     worker: Worker;
-    model: SendSMSModel = new SendSMSModel('0426706255', 'Buy anything from our Uniqlo store in Westfield, Parramatta this weekend & receive 10 % off.')
+    model: SendSMSModel = new SendSMSModel('0426706255', 'Buy anything from our Uniqlo store in Westfield, Parramatta to receive 10 % off.')
     
     private clientId: string = '7Ok9bKbKed4AnChaSVe1QU3YRgFOj1mf';
     private baseApiUrl = 'https://apac-demo3-test.apigee.net/v1/messagingservices/';
