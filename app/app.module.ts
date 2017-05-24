@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
+import { SimulatorComponent } from './simulator/simulator.component';
 import { SimulatorModule } from './simulator/simulator.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { JsonpModule } from '@angular/http';
@@ -31,6 +32,8 @@ import { Ng2DatetimePickerModule } from 'ng2-datetime-picker';
   ],
   declarations:
   [
+        AppComponent,
+    SimulatorComponent
   ],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
