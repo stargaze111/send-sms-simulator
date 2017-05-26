@@ -58,6 +58,11 @@ export class SimulatorComponent {
 		                if(data!=null&&data.error!=null){
 		                  this.countFailures++;
 		                  this.responseMessage = data.error.message;
+		                  
+		                  if(this.responseMessage==null||this.responseMessage==""){
+		                     this.responseMessage = "Unknown Error. Check if your client_id is valid. Alternatively, check the logs for more details."
+		                  }
+		                  console.log("responseMessage : "+this.responseMessage);
 		                }else{
 		                  this.countSuccess++;
 		                  this.responseMessage = "success";
@@ -87,6 +92,9 @@ export class SimulatorComponent {
                 if(data!=null&&data.error!=null){
                   this.countFailures++;
                   this.responseMessage = data.error.message;
+		                  if(this.responseMessage==null||this.responseMessage==""){
+		                     this.responseMessage = "Unknown Error. Check if your client_id is valid. Alternatively, check the logs for more details."
+		                  }                  
                   console.log("responseMessage : "+this.responseMessage);
                 }else{
                   this.countSuccess++;
